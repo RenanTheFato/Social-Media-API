@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { FastifyTypedInstance } from "../@types/types";
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import z from "zod";
+import { SinginUserController } from "./controllers/users/SinginUserController";
 
 interface User {
   id: string,
@@ -39,6 +40,33 @@ export async function routes(fastify: FastifyTypedInstance) {
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new CreateUserController().handle(req, rep)
+  })
+
+  fastify.post('/singin', {
+    schema: {
+      tags: ['user', 'authenticate'],
+      description: 'Authenticate an exist user with your credentials',
+      body: z.object({
+        email: z.string(),
+        password: z.string()
+      }),
+      response: {
+        201 : z.object({
+          user: z.object({
+            id: z.string(),
+            email: z.string(),
+            username: z.string(),
+            created_at: z.date(),
+            updated_at: z.date()
+          })
+        }),
+        401: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) => {
+    return new SinginUserController().handle(req, rep)
   })
 
   fastify.get('/users', {
