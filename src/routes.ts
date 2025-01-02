@@ -3,6 +3,7 @@ import { FastifyTypedInstance } from "../@types/types";
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import z from "zod";
 import { SinginUserController } from "./controllers/users/SinginUserController";
+import { AuthMiddleware } from "./middlewares/authentication";
 
 interface User {
   id: string,
@@ -70,6 +71,7 @@ export async function routes(fastify: FastifyTypedInstance) {
   })
 
   fastify.get('/users', {
+    preHandler : AuthMiddleware,
     schema: {
       tags: ['user'],
       description: 'List users',
