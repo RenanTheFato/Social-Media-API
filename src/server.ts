@@ -1,10 +1,11 @@
 import { fastify } from "fastify";
 import { fastifyCors } from "@fastify/cors";
-import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
+import { validatorCompiler, serializerCompiler, ZodTypeProvider, jsonSchemaTransform } from "fastify-type-provider-zod";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
+import { routes } from "./routes";
 
-const server = fastify()
+const server = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
 
 async function start(){
 
@@ -18,13 +19,15 @@ async function start(){
         title: 'Social Media API',
         version: '1.0.0',
       }
-    }
+    },
+    transform: jsonSchemaTransform,
   })
 
   await server.register(fastifySwaggerUi, {
     routePrefix: '/docs'
   })
 
+  await server.register(routes)
 
   try {
     await server.listen({
@@ -37,3 +40,5 @@ async function start(){
     console.log(`The server could not be started: ${error}`)
   }
 }
+
+start()
