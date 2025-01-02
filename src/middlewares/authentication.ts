@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import jwt from 'jsonwebtoken'
+import { prisma } from "../lib/prisma";
 
 type JwtPayLoad = {
   id: string,
@@ -17,7 +18,23 @@ export async function AuthMiddleware(req: FastifyRequest, rep: FastifyReply) {
 
   try {
     const { id } = jwt.verify(token, process.env.JWT_PASSWORD ?? '') as JwtPayLoad
-    req.user = { id }
+
+    const user = await prisma.users.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+      }
+    })
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    req.user = user
     return
   } catch (error) {
     console.error(`Error on get token: ${error}`)

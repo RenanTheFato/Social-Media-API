@@ -39,7 +39,7 @@ export class CreateUserController {
         where: {
           email,
         },
-      });
+      })
 
       if (verifyEmail > 0) {
         return rep.status(400).send({ message: "Email is already in use." })
@@ -48,6 +48,22 @@ export class CreateUserController {
     } catch (error: any) {
       console.error(`Error on verify user email on database: ${error}`)
       throw new Error(`Error on verify user email on on database: ${error}`)
+    }
+
+    try {
+      const verifyUsername = await prisma.users.count({
+        where: {
+          username,
+        },
+      })
+
+      if (verifyUsername > 0) {
+        return rep.status(400).send({ message: "Username is already in use." })
+      }
+      
+    } catch (error: any) {
+      console.error(`Error on verify username on database: ${error}`)
+      throw new Error(`Error on verify username on on database: ${error}`)
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)

@@ -5,6 +5,7 @@ import { SinginUserController } from "./controllers/users/SinginUserController";
 import { GetUserController } from "./controllers/users/GetUserController";
 import { AuthMiddleware } from "./middlewares/authentication";
 import z from "zod";
+import { CreatePostController } from "./controllers/posts/CreatePostController";
 
 
 export async function routes(fastify: FastifyTypedInstance) {
@@ -58,6 +59,31 @@ export async function routes(fastify: FastifyTypedInstance) {
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new SinginUserController().handle(req, rep)
+  })
+
+  fastify.post('/create-post', {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['posts', 'creation'],
+      description: 'Create a post',
+      body: z.object({
+        content: z.string(),
+      }),
+      response: {
+        201: z.object({
+          message: z.string(),
+          post: z.object({
+            id: z.string(),
+            content: z.string(),
+            author: z.string(),
+            userId: z.string(),
+            created_at: z.date()
+          })
+        })
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) => {
+    return new CreatePostController().handle(req, rep)
   })
 
   fastify.get('/user', {

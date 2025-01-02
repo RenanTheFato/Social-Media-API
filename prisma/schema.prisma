@@ -17,22 +17,25 @@ model Users {
   id         String   @id @default(uuid())
   email      String   @unique
   password   String
-  username   String
+  username   String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  posts Posts[]
+  posts    Posts[]
   comments Comments[]
 
+  @@unique([id, username])
   @@map("users")
 }
 
 model Posts {
-  id      String @id @default(uuid())
-  content String 
+  id         String   @id @default(uuid())
+  content    String
+  author     String
+  created_at DateTime @default(now())
 
   userId String
-  user Users @relation(fields: [userId], references: [id])
+  user   Users  @relation(fields: [userId, author], references: [id, username])
 
   comments Comments[]
 
@@ -40,14 +43,16 @@ model Posts {
 }
 
 model Comments {
-  id String @id @default(uuid())
-  content String
+  id         String   @id @default(uuid())
+  content    String
+  author     String
+  created_at DateTime @default(now())
 
   userId String
-  postId String
+  user   Users  @relation(fields: [userId, author], references: [id, username])
 
-  user Users @relation(fields: [userId], references: [id])
-  post Posts @relation(fields: [postId], references: [id])
+  postId String
+  post   Posts  @relation(fields: [postId], references: [id])
 
   @@map("comments")
 }
