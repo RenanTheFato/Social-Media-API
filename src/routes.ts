@@ -4,8 +4,12 @@ import { CreateUserController } from "./controllers/users/CreateUserController";
 import { SinginUserController } from "./controllers/users/SinginUserController";
 import { GetUserController } from "./controllers/users/GetUserController";
 import { AuthMiddleware } from "./middlewares/authentication";
-import z from "zod";
 import { CreatePostController } from "./controllers/posts/CreatePostController";
+import { SearchPostController } from "./controllers/posts/SearchPostController";
+import { CreateCommentController } from "./controllers/comments/CreateCommentController";
+import z from "zod";
+import { DeleteUserController } from "./controllers/users/DeleteUserController";
+import { DeleteCommentController } from "./controllers/comments/DeleteCommentController";
 
 
 export async function routes(fastify: FastifyTypedInstance) {
@@ -82,8 +86,41 @@ export async function routes(fastify: FastifyTypedInstance) {
         })
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) => {
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new CreatePostController().handle(req, rep)
+  })
+
+  fastify.post('/create-comment', {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['comments', 'creation'],
+      description: 'Create a comment on a post',
+      body: z.object({
+        postId: z.string(),
+        content: z.string(),
+      }),
+      response: {
+        201: z.object({
+          message: z.string(),
+          comment: z.object({
+            id: z.string(),
+            content: z.string(),
+            author: z.string(),
+            created_at: z.date(),
+            userId: z.string(),
+            postId: z.string(),
+          })
+        }),
+        401: z.object({
+          message: z.string(),
+        }),
+        404: z.object({
+          message: z.string(),
+        })
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
+    return new CreateCommentController().handle(req, rep)
   })
 
   fastify.get('/user', {
@@ -102,6 +139,9 @@ export async function routes(fastify: FastifyTypedInstance) {
             updated_at: z.date(),
           })
         }),
+        400: z.object({
+          message: z.string(),
+        }),
         401: z.object({
           message: z.string(),
         })
@@ -109,5 +149,40 @@ export async function routes(fastify: FastifyTypedInstance) {
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new GetUserController().handle(req, rep)
+  })
+
+
+  fastify.get('/search-post', {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['posts', 'search'],
+      description: 'Search for a post',
+      response: {
+        201: z.object({
+          id: z.string(),
+          content: z.string(),
+          author: z.string(),
+          created_at: z.date(),
+          userId: z.string()
+        }),
+        401: z.object({
+          message: z.string(),
+        })
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
+    return new SearchPostController().handle(req, rep)
+  })
+
+  fastify.delete("/delete-user", {
+    preHandler: AuthMiddleware
+  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    return new DeleteUserController().handle(req, rep)
+  })
+
+  fastify.delete("/delete-comment", {
+    preHandler: AuthMiddleware
+  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    return new DeleteCommentController().handle(req, rep)
   })
 }

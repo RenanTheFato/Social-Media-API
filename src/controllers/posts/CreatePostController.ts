@@ -30,9 +30,9 @@ export class CreatePostController {
 
     try {
       const post = await createPostService.execute({id: userId, content, username})
-      return rep.code(201).send({ message: 'Post registered successfully', post: post });
+      return rep.code(201).send({ message: 'Post registered successfully', post: post })
     } catch (error) {
-      return rep.code(400).send({ message: 'Registration failed' });
+      return rep.code(400).send({ message: 'Registration failed' })
     }
   }
 }

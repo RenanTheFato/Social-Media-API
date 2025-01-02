@@ -35,7 +35,7 @@ model Posts {
   created_at DateTime @default(now())
 
   userId String
-  user   Users  @relation(fields: [userId, author], references: [id, username])
+  user   Users  @relation(fields: [userId, author], references: [id, username], onDelete: Cascade)
 
   comments Comments[]
 
@@ -49,10 +49,10 @@ model Comments {
   created_at DateTime @default(now())
 
   userId String
-  user   Users  @relation(fields: [userId, author], references: [id, username])
+  user   Users  @relation(fields: [userId, author], references: [id, username], onDelete: Cascade)
 
   postId String
-  post   Posts  @relation(fields: [postId], references: [id])
+  post   Posts  @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
