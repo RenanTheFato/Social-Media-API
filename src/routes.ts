@@ -1,20 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { FastifyTypedInstance } from "../@types/types";
 import { CreateUserController } from "./controllers/users/CreateUserController";
-import z from "zod";
 import { SinginUserController } from "./controllers/users/SinginUserController";
+import { GetUserController } from "./controllers/users/GetUserController";
 import { AuthMiddleware } from "./middlewares/authentication";
+import z from "zod";
 
-interface User {
-  id: string,
-  name: string,
-  email: string
-}
-
-const users: User[] = []
 
 export async function routes(fastify: FastifyTypedInstance) {
-  fastify.post('/users', {
+  fastify.post('/singup', {
     schema: {
       tags: ['user', 'creation'],
       description: 'Create a new user',
@@ -52,13 +46,9 @@ export async function routes(fastify: FastifyTypedInstance) {
         password: z.string()
       }),
       response: {
-        201 : z.object({
+        201: z.object({
           user: z.object({
-            id: z.string(),
-            email: z.string(),
-            username: z.string(),
-            created_at: z.date(),
-            updated_at: z.date()
+            token: z.string()
           })
         }),
         401: z.object({
@@ -66,24 +56,32 @@ export async function routes(fastify: FastifyTypedInstance) {
         })
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) => {
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new SinginUserController().handle(req, rep)
   })
 
-  fastify.get('/users', {
-    preHandler : AuthMiddleware,
+  fastify.get('/user', {
+    preHandler: AuthMiddleware,
     schema: {
       tags: ['user'],
-      description: 'List users',
+      description: 'Get user informations',
       response: {
-        200: z.array(z.object({
-          id: z.string(),
-          name: z.string(),
-          email: z.string()
-        }))
+        201: z.object({
+          user: z.object({
+            id: z.string(),
+            email: z.string(),
+            password: z.string(),
+            username: z.string(),
+            created_at: z.date(),
+            updated_at: z.date(),
+          })
+        }),
+        401: z.object({
+          message: z.string(),
+        })
       }
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
-    return users
+    return new GetUserController().handle(req, rep)
   })
 }

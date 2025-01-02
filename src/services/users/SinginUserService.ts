@@ -28,10 +28,7 @@ export class SinginUserService{
 
     const token = jwt.sign({ id: isUserExists.id}, String(process.env.JWT_PASSWORD), {expiresIn: '12h'})
 
-    const {password: _, ...loggedUser} = isUserExists
-
     return {
-      user: loggedUser,
       token: token,
     }
   }

@@ -21,5 +21,33 @@ model Users {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  posts Posts[]
+  comments Comments[]
+
   @@map("users")
+}
+
+model Posts {
+  id      String @id @default(uuid())
+  content String 
+
+  userId String
+  user Users @relation(fields: [userId], references: [id])
+
+  comments Comments[]
+
+  @@map("posts")
+}
+
+model Comments {
+  id String @id @default(uuid())
+  content String
+
+  userId String
+  postId String
+
+  user Users @relation(fields: [userId], references: [id])
+  post Posts @relation(fields: [postId], references: [id])
+
+  @@map("comments")
 }

@@ -18,7 +18,7 @@ export class SinginUserController{
       return rep.status(200).send({user})
     } catch (error) {
       console.error(error);
-      return rep.code(401).send({ message: 'Credentials failed' });
+      return rep.code(401).send({ message: 'Credentials failed' })
     }
   }
 }

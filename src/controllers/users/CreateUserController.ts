@@ -50,7 +50,7 @@ export class CreateUserController {
       throw new Error(`Error on verify user email on on database: ${error}`)
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const createUserService = new CreateUserService()
 
