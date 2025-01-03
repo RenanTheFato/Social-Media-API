@@ -31,7 +31,7 @@ export class CreateUserController {
     try {
       validateSchema.parse(req.body)
     } catch (error: any) {
-      return rep.send(400).send({ error: error.errors })
+      return rep.send(400).send({ message: error.errors })
     }
 
     try {

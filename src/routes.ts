@@ -6,15 +6,19 @@ import { CreatePostController } from "./controllers/posts/CreatePostController";
 import { CreateCommentController } from "./controllers/comments/CreateCommentController";
 
 import { SinginUserController } from "./controllers/users/SinginUserController";
-import { GetUserController } from "./controllers/users/GetUserController";
 import { SearchPostController } from "./controllers/posts/SearchPostController";
+import { GetUserController } from "./controllers/users/GetUserController";
 
 import { DeleteUserController } from "./controllers/users/DeleteUserController";
+import { DeletePostController } from "./controllers/posts/DeletePostController";
 import { DeleteCommentController } from "./controllers/comments/DeleteCommentController";
+
+import { UpdateUserEmailController } from "./controllers/users/UpdateUserEmailController";
 
 import { AuthMiddleware } from "./middlewares/authentication";
 import z from "zod";
-import { DeletePostController } from "./controllers/posts/DeletePostController";
+import { UpdateUsernameController } from "./controllers/users/UpdateUsernameController";
+import { UpdateUserPasswordController } from "./controllers/users/UpdateUserPasswordController";
 
 
 export async function routes(fastify: FastifyTypedInstance) {
@@ -244,6 +248,60 @@ export async function routes(fastify: FastifyTypedInstance) {
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new DeleteCommentController().handle(req, rep)
+  })
+
+  fastify.patch("/update-user-email", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['update', 'user'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    return new UpdateUserEmailController().handle(req, rep)
+  })
+
+  fastify.patch("/update-username", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['update', 'user'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    return new UpdateUsernameController().handle(req, rep)
+  })
+
+  fastify.patch("/update-user-password", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['update', 'user'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+        409: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    return new UpdateUserPasswordController().handle(req, rep)
   })
 
 }
