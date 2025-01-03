@@ -7,6 +7,16 @@ interface Props {
 export class DeleteUserService {
   async execute({ id }: Props) {
 
+    const user = await prisma.users.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found.")
+    }
+
     try {
       await prisma.users.delete({
         where: {

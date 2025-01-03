@@ -42,6 +42,10 @@ export class SearchPostService {
         ORDER BY p.created_at DESC
       `;
 
+      if (!post) {
+        throw new Error("Post not found or non-existent")
+      }
+
       return post;
     } catch (error) {
       console.error(`Error on search post on database: ${error}`)

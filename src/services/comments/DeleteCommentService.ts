@@ -1,17 +1,17 @@
 import { prisma } from "../../lib/prisma";
 
-interface DeleteCommentProps {
+interface Props {
   commentId: string
   userId: string
 }
 
 export class DeleteCommentService {
-  async execute({ commentId, userId }: DeleteCommentProps) {
+  async execute({ commentId, userId }: Props) {
     const comment = await prisma.comments.findUnique({
       where: {
         id: commentId,
       },
-    });
+    })
 
     if (!comment) {
       throw new Error("Comment not found.")
@@ -25,6 +25,6 @@ export class DeleteCommentService {
       where: {
         id: commentId,
       },
-    });
+    })
   }
 }

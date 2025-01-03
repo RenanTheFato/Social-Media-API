@@ -1,15 +1,20 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { FastifyTypedInstance } from "../@types/types";
+
 import { CreateUserController } from "./controllers/users/CreateUserController";
+import { CreatePostController } from "./controllers/posts/CreatePostController";
+import { CreateCommentController } from "./controllers/comments/CreateCommentController";
+
 import { SinginUserController } from "./controllers/users/SinginUserController";
 import { GetUserController } from "./controllers/users/GetUserController";
-import { AuthMiddleware } from "./middlewares/authentication";
-import { CreatePostController } from "./controllers/posts/CreatePostController";
 import { SearchPostController } from "./controllers/posts/SearchPostController";
-import { CreateCommentController } from "./controllers/comments/CreateCommentController";
-import z from "zod";
+
 import { DeleteUserController } from "./controllers/users/DeleteUserController";
 import { DeleteCommentController } from "./controllers/comments/DeleteCommentController";
+
+import { AuthMiddleware } from "./middlewares/authentication";
+import z from "zod";
+import { DeletePostController } from "./controllers/posts/DeletePostController";
 
 
 export async function routes(fastify: FastifyTypedInstance) {
@@ -71,7 +76,9 @@ export async function routes(fastify: FastifyTypedInstance) {
       tags: ['posts', 'creation'],
       description: 'Create a post',
       body: z.object({
-        content: z.string(),
+        content: z.string()
+          .min(1, { message: "The content of the post has not reached the minimum number of characters (1)" })
+          .max(255, { message: "The content of the post has reached the character limit (255)" })
       }),
       response: {
         201: z.object({
@@ -96,8 +103,10 @@ export async function routes(fastify: FastifyTypedInstance) {
       tags: ['comments', 'creation'],
       description: 'Create a comment on a post',
       body: z.object({
-        postId: z.string(),
-        content: z.string(),
+        postId: z.string().min(1, { message: "Couldn't find the post" }),
+        content: z.string()
+          .min(1, { message: "The content of the post has not reached the minimum number of characters (1)" })
+          .max(255, { message: "The content of the post has reached the character limit (255)" })
       }),
       response: {
         201: z.object({
@@ -175,14 +184,66 @@ export async function routes(fastify: FastifyTypedInstance) {
   })
 
   fastify.delete("/delete-user", {
-    preHandler: AuthMiddleware
-  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['delete', 'user'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new DeleteUserController().handle(req, rep)
   })
 
+  fastify.delete("/delete-post", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['delete', 'posts'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+        403: z.object({
+          message: z.string(),
+        }),
+        404: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async(req: FastifyRequest, rep: FastifyReply) => {
+    return new DeletePostController().handle(req, rep)
+  })
+
   fastify.delete("/delete-comment", {
-    preHandler: AuthMiddleware
-  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['delete', 'comments'],
+      response: {
+        200: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+        403: z.object({
+          message: z.string(),
+        }),
+        404: z.object({
+          message: z.string(),
+        }),
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new DeleteCommentController().handle(req, rep)
   })
+
 }

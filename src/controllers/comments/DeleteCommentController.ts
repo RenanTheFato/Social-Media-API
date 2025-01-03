@@ -3,10 +3,10 @@ import { DeleteCommentService } from "../../services/comments/DeleteCommentServi
 
 export class DeleteCommentController {
   async handle(req: FastifyRequest, rep: FastifyReply) {
-    try {
-      const { commentId }  = req.query as {commentId: string}
-      const userId = req.user.id as string
+    const { commentId }  = req.query as { commentId: string }
+    const userId = req.user.id as string
 
+    try {
       const deleteCommentService = new DeleteCommentService()
 
       await deleteCommentService.execute({ commentId, userId })

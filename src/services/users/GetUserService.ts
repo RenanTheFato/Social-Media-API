@@ -13,6 +13,11 @@ export class GetUserService{
           id: userId
         }
       })
+
+      if (!user) {
+        throw new Error("User not found or non-existent")
+      }
+      
       return user
     } catch (error) {
       console.error(`Error on find user on database: ${error}`)
