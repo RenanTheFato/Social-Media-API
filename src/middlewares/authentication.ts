@@ -1,6 +1,6 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { prisma } from "../lib/prisma"
 import jwt from 'jsonwebtoken'
-import { prisma } from "../lib/prisma";
 
 type JwtPayLoad = {
   id: string,

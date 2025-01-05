@@ -1,6 +1,6 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
-import { CreatePostService } from "../../services/posts/CreatePostService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { CreatePostService } from "../../services/posts/CreatePostService"
+import z from "zod"
 
 interface Props {
   content: string,

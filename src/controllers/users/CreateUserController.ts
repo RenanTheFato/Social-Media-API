@@ -1,6 +1,6 @@
-import { prisma } from "../../lib/prisma";
-import { CreateUserService } from "../../services/users/CreateUserService";
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { CreateUserService } from "../../services/users/CreateUserService"
+import { prisma } from "../../lib/prisma"
 import bcrypt from 'bcryptjs'
 import z from 'zod'
 
@@ -72,10 +72,10 @@ export class CreateUserController {
 
     try {
       await createUserService.execute({ email, password: hashedPassword, username })
-      return rep.code(201).send({ message: 'User registered successfully' });
+      return rep.code(201).send({ message: 'User registered successfully' })
     } catch (error) {
       console.error(error);
-      return rep.code(400).send({ message: 'Registration failed' });
+      return rep.code(400).send({ message: 'Registration failed' })
     }
   }
 }

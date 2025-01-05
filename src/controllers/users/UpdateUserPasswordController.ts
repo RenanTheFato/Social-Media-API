@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify"
+import { UpdateUserPasswordService } from "../../services/users/UpdateUserPasswordService"
 import { prisma } from "../../lib/prisma"
 import bcrypt from 'bcryptjs'
-import z from "zod";
-import { UpdateUserPasswordService } from "../../services/users/UpdateUserPasswordService";
+import z from "zod"
 
 interface Props {
   current_password: string,
@@ -51,9 +51,9 @@ export class UpdateUserPasswordController {
       const updateUserPasswordService = new UpdateUserPasswordService()
 
       await updateUserPasswordService.execute({userId ,password: newHashedPassword})
-      return rep.code(200).send({ message: 'User password updated successfully' });
+      return rep.code(200).send({ message: 'User password updated successfully' })
     } catch (error) {
-      return rep.code(400).send({ message: 'Registration failed' });
+      return rep.code(400).send({ message: 'Registration failed' })
     }
   }
 }

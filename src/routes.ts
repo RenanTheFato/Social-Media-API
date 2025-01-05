@@ -1,25 +1,24 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { FastifyTypedInstance } from "../@types/types";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyTypedInstance } from "./@types/types"
 
-import { CreateUserController } from "./controllers/users/CreateUserController";
-import { CreatePostController } from "./controllers/posts/CreatePostController";
-import { CreateCommentController } from "./controllers/comments/CreateCommentController";
+import { CreateUserController } from "./controllers/users/CreateUserController"
+import { CreatePostController } from "./controllers/posts/CreatePostController"
+import { CreateCommentController } from "./controllers/comments/CreateCommentController"
 
-import { SinginUserController } from "./controllers/users/SinginUserController";
-import { SearchPostController } from "./controllers/posts/SearchPostController";
-import { GetUserController } from "./controllers/users/GetUserController";
+import { SinginUserController } from "./controllers/users/SinginUserController"
+import { SearchPostController } from "./controllers/posts/SearchPostController"
+import { GetUserController } from "./controllers/users/GetUserController"
 
-import { DeleteUserController } from "./controllers/users/DeleteUserController";
-import { DeletePostController } from "./controllers/posts/DeletePostController";
-import { DeleteCommentController } from "./controllers/comments/DeleteCommentController";
+import { DeleteUserController } from "./controllers/users/DeleteUserController"
+import { DeletePostController } from "./controllers/posts/DeletePostController"
+import { DeleteCommentController } from "./controllers/comments/DeleteCommentController"
 
-import { UpdateUserEmailController } from "./controllers/users/UpdateUserEmailController";
+import { UpdateUserEmailController } from "./controllers/users/UpdateUserEmailController"
+import { UpdateUsernameController } from "./controllers/users/UpdateUsernameController"
+import { UpdateUserPasswordController } from "./controllers/users/UpdateUserPasswordController"
 
-import { AuthMiddleware } from "./middlewares/authentication";
-import z from "zod";
-import { UpdateUsernameController } from "./controllers/users/UpdateUsernameController";
-import { UpdateUserPasswordController } from "./controllers/users/UpdateUserPasswordController";
-
+import { AuthMiddleware } from "./middlewares/authentication"
+import z from "zod"
 
 export async function routes(fastify: FastifyTypedInstance) {
   fastify.post('/singup', {
@@ -303,5 +302,4 @@ export async function routes(fastify: FastifyTypedInstance) {
   }, async(req: FastifyRequest, rep: FastifyReply) =>{
     return new UpdateUserPasswordController().handle(req, rep)
   })
-
 }

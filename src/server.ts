@@ -1,9 +1,9 @@
-import { fastify } from "fastify";
-import { fastifyCors } from "@fastify/cors";
-import { validatorCompiler, serializerCompiler, ZodTypeProvider, jsonSchemaTransform } from "fastify-type-provider-zod";
-import { fastifySwagger } from "@fastify/swagger";
-import { fastifySwaggerUi } from "@fastify/swagger-ui";
-import { routes } from "./routes";
+import { validatorCompiler, serializerCompiler, ZodTypeProvider, jsonSchemaTransform } from "fastify-type-provider-zod"
+import { fastifySwaggerUi } from "@fastify/swagger-ui"
+import { fastifySwagger } from "@fastify/swagger"
+import { fastifyCors } from "@fastify/cors"
+import { fastify } from "fastify"
+import { routes } from "./routes"
 
 const server = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
 

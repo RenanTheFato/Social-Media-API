@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { SinginUserService } from "../../services/users/SinginUserService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { SinginUserService } from "../../services/users/SinginUserService"
 
 interface Props{
   email: string,

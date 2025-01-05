@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { DeletePostService } from "../../services/posts/DeletePostService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { DeletePostService } from "../../services/posts/DeletePostService"
 
 export class DeletePostController{
   async handle(req: FastifyRequest, rep: FastifyReply){

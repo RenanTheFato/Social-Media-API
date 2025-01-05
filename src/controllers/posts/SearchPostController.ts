@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { SearchPostService } from "../../services/posts/SearchPostService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { SearchPostService } from "../../services/posts/SearchPostService"
 
 interface Props{
   search: string
@@ -20,7 +20,7 @@ export class SearchPostController{
       const post = await searchPostService.execute(search)
       return rep.code(200).send(post)
     } catch (error) {
-      return rep.code(400).send({ message: 'Error on search post' });
+      return rep.code(400).send({ message: 'Error on search post' })
     }
   }
 }

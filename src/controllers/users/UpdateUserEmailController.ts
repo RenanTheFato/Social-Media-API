@@ -1,7 +1,7 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
-import { prisma } from "../../lib/prisma";
-import { UpdateUserEmailService } from "../../services/users/UpdateUserEmailService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { UpdateUserEmailService } from "../../services/users/UpdateUserEmailService"
+import { prisma } from "../../lib/prisma"
+import z from "zod"
 
 interface Props {
   email: string,
@@ -45,9 +45,9 @@ export class UpdateUserEmailController {
 
     try {
       await updateUserEmailService.execute({userId, email})
-      return rep.code(200).send({ message: 'User email updated successfully' });
+      return rep.code(200).send({ message: 'User email updated successfully' })
     } catch (error) {
-      return rep.code(400).send({ message: 'Registration failed' });
+      return rep.code(400).send({ message: 'Registration failed' })
     }
   }
 }

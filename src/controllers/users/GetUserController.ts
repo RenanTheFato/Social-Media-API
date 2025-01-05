@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { GetUserService } from "../../services/users/GetUserService";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { GetUserService } from "../../services/users/GetUserService"
 
 export class GetUserController{
   async handle(req: FastifyRequest, rep: FastifyReply){
@@ -12,8 +12,8 @@ export class GetUserController{
       const user = await getUserService.execute({userId})
       return rep.status(200).send({ user })
     } catch (error) {
-      console.error(error);
-      return rep.code(400).send({ message: 'Error on get user' });
+      console.error(error)
+      return rep.code(400).send({ message: 'Error on get user' })
     }
   }
 }
