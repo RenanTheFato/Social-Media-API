@@ -1,63 +1,58 @@
-<h1 align='center'>
-  Social Media API
-</h1>
+# Social Media API
 
-<div align="center">
 <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
 <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white">
 <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
-</div>
 
-## 📋 Sobre o Projeto
+---
 
-API RESTful de mídia social desenvolvida com Node.js e TypeScript, utilizando PostgreSQL como banco de dados e autenticação JWT.
+## 📋 About The Project
+
+RESTful social media API developed with Node.js and TypeScript, using PostgreSQL as a database, JWT authentication and Fastify.
 
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-- Autenticação JWT
-- CRUD de usuários
-- CRUD de posts
-- Comentários em posts
-- Sistema de likes
-- Feed personalizado
-- Sistema de seguir usuários
+- JWT authentication
+- User CRUD
+- Post System
+- Comments on posts
+- Follow users system
 
-## 💻 Instalação
+## 💻 Installation
 
-1. Clone o repositório
+### 1. Clone the repository
 ```bash
 git clone https://github.com/RenanTheFato/Social-Media-API.git
 cd Social-Media-API
 ```
 
-2. Instale as dependências
+### 2. Install the dependencies
 ```bash
 npm install
 ```
 
-3. Configure as variáveis de ambiente
+### 3. Set the environment variables
+
+> .env.example  ──> .env
+
+
+### 4. Create the database and run
 ```bash
-cp .env.example .env
-# Configure suas variáveis no arquivo .env
+npx prisma migrate dev
 ```
 
-4. Crie o banco de dados
-```bash
-prisma migrate dev
-```
-
-5. Scripts disponíveis
+### 5. Scripts available
 
 ```bash
-# Desenvolvimento
+# Development
 npm run dev
 
 # Build
 npm run build
 
-# Produção
+# Production
 npm run server
 
 ```
@@ -118,23 +113,22 @@ social-media-api/
 
 ```bash
   # You can access the API documentation via swagger on the route:
-  http://localhost[your-port]/docs
+  http://localhost:[your-port]/docs
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is under the MIT license. See the [LICENSE](LICENSE) file for more details.
 
-## 👥 Contribuição
+## 👥 Contribution
 
-1. Fork o projeto
-2. Crie sua Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a Branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+### Share the project
 
-## 📧 Contato
+
+## 📧 Contact
 
 Renan - [GitHub](https://github.com/RenanTheFato)
 
-Link do projeto: [https://github.com/RenanTheFato/Social-Media-API](https://github.com/RenanTheFato/Social-Media-API)
+Email - <a href="mailto:renan.santana007@hotmail.com">renan.santana007@hotmail.com</a>
+
+Project Link: [https://github.com/RenanTheFato/Social-Media-API](https://github.com/RenanTheFato/Social-Media-API)
