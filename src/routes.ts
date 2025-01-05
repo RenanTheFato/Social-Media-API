@@ -8,6 +8,7 @@ import { CreateCommentController } from "./controllers/comments/CreateCommentCon
 import { SinginUserController } from "./controllers/users/SinginUserController"
 import { SearchPostController } from "./controllers/posts/SearchPostController"
 import { GetUserController } from "./controllers/users/GetUserController"
+import { GetUserFollowersController } from "./controllers/users/GetUserFollowersController"
 
 import { DeleteUserController } from "./controllers/users/DeleteUserController"
 import { DeletePostController } from "./controllers/posts/DeletePostController"
@@ -16,6 +17,8 @@ import { DeleteCommentController } from "./controllers/comments/DeleteCommentCon
 import { UpdateUserEmailController } from "./controllers/users/UpdateUserEmailController"
 import { UpdateUsernameController } from "./controllers/users/UpdateUsernameController"
 import { UpdateUserPasswordController } from "./controllers/users/UpdateUserPasswordController"
+
+import { SetUserFollowersController } from "./controllers/users/SetUserFollowersController"
 
 import { AuthMiddleware } from "./middlewares/authentication"
 import z from "zod"
@@ -135,6 +138,27 @@ export async function routes(fastify: FastifyTypedInstance) {
     return new CreateCommentController().handle(req, rep)
   })
 
+  fastify.post("/follow", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['user', 'creation'],
+      description: 'Set follower to an user',
+      response: {
+        200: z.object({
+          message: z.object({
+            action: z.string(),
+            message: z.string()
+          })
+        }),
+        400: z.object({
+          message: z.string(),
+        })
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
+    return new SetUserFollowersController().handle(req, rep)
+  })
+
   fastify.get('/user', {
     preHandler: AuthMiddleware,
     schema: {
@@ -161,6 +185,32 @@ export async function routes(fastify: FastifyTypedInstance) {
     }
   }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new GetUserController().handle(req, rep)
+  })
+
+  fastify.get("/followers", {
+    preHandler: AuthMiddleware,
+    schema: {
+      tags: ['user', 'search'],
+      description: 'Search user followers',
+      response: {
+        200: z.object({
+          followers: z.object({
+            count: z.number(),
+            followers: z.array(
+              z.object({
+                username: z.string(),
+                followingSince: z.date()
+              })
+            )
+          })
+        }),
+        400: z.object({
+          message: z.string(),
+        })
+      }
+    }
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
+    return new GetUserFollowersController().handle(req, rep)
   })
 
 
@@ -190,6 +240,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['delete', 'user'],
+      description: 'Delete an user',
       response: {
         200: z.object({
           message: z.string(),
@@ -207,6 +258,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['delete', 'posts'],
+      description: 'Delete an post',
       response: {
         200: z.object({
           message: z.string(),
@@ -222,7 +274,7 @@ export async function routes(fastify: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) => {
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new DeletePostController().handle(req, rep)
   })
 
@@ -230,6 +282,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['delete', 'comments'],
+      description: 'Delete an comment',
       response: {
         200: z.object({
           message: z.string(),
@@ -253,6 +306,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['update', 'user'],
+      description: 'Update the user email',
       response: {
         200: z.object({
           message: z.string(),
@@ -262,7 +316,7 @@ export async function routes(fastify: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new UpdateUserEmailController().handle(req, rep)
   })
 
@@ -270,6 +324,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['update', 'user'],
+      description: 'Update the username',
       response: {
         200: z.object({
           message: z.string(),
@@ -279,7 +334,7 @@ export async function routes(fastify: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new UpdateUsernameController().handle(req, rep)
   })
 
@@ -287,6 +342,7 @@ export async function routes(fastify: FastifyTypedInstance) {
     preHandler: AuthMiddleware,
     schema: {
       tags: ['update', 'user'],
+      description: 'Update the user password',
       response: {
         200: z.object({
           message: z.string(),
@@ -299,7 +355,7 @@ export async function routes(fastify: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(req: FastifyRequest, rep: FastifyReply) =>{
+  }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new UpdateUserPasswordController().handle(req, rep)
   })
 }

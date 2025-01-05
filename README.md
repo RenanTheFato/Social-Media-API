@@ -7,7 +7,6 @@
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
 <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white">
 <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
-<img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white">
 </div>
 
 ## 📋 Sobre o Projeto
@@ -24,16 +23,6 @@ API RESTful de mídia social desenvolvida com Node.js e TypeScript, utilizando P
 - Sistema de likes
 - Feed personalizado
 - Sistema de seguir usuários
-
-## 🛠️ Tecnologias
-
-- TypeScript
-- Node.js
-- Express.js
-- PostgreSQL
-- TypeORM
-- JWT
-- Jest (Testes)
 
 ## 💻 Instalação
 
@@ -54,7 +43,12 @@ cp .env.example .env
 # Configure suas variáveis no arquivo .env
 ```
 
-4. Scripts disponíveis
+4. Crie o banco de dados
+```bash
+prisma migrate dev
+```
+
+5. Scripts disponíveis
 
 ```bash
 # Desenvolvimento
@@ -66,13 +60,13 @@ npm run build
 # Produção
 npm run server
 
-# Testes
-npm run test
 ```
 ## 📁 Project Structure
 
 ```
 social-media-api/
+├── prisma/
+│   └── schema.prisma
 ├── src/
 │   ├── controllers/
 │   │   ├── comments/
@@ -123,7 +117,7 @@ social-media-api/
 ## 📚 API Documentation
 
 ```bash
-  # You can access the API documentation via swagger on the route
+  # You can access the API documentation via swagger on the route:
   http://localhost[your-port]/docs
 ```
 
